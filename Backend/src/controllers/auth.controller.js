@@ -56,7 +56,7 @@ ${config.frontendURL}/verify-email?token=${verificationToken}
 Best regards,
 The LearnDeck Team`,
 
-        html: `<p>Hello ${user.name},</p><p>Please verify your email by clicking <a href="${config.frontendURL}/verify-email?token=${verificationToken}">Verify Email</a></p><p>Best regards,<br>The LearnDeck Team</p>`,
+      html: `<p>Hello ${user.name},</p><p>Please verify your email by clicking <a href="${config.frontendURL}/verify-email?token=${verificationToken}">Verify Email</a></p><p>Best regards,<br>The LearnDeck Team</p>`,
     });
     return res.status(201).json({
       success: true,
@@ -99,7 +99,21 @@ export async function loginController(req, res) {
     });
   }
 }
-export async function getMeController(req, res) {}
+export async function getMeController(req, res) {
+  try {
+    const userId = req.user.id; // Assuming the user ID is stored in req.user after authentication
+    const user = await userModel.findById(userId).select("-password");
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
 export async function logoutController(req, res) {}
 export async function verifyEmailController(req, res) {
   try {
