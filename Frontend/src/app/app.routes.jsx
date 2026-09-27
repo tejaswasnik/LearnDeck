@@ -8,6 +8,8 @@ import Protected from "../components/Protected.jsx";
 import Guest from "../components/Guest.jsx";
 import StudentDashboard from "../features/users/pages/StudentDashboard.jsx";
 import Courses from "../features/courses/pages/Courses.jsx";
+import CourseDetails from "../features/courses/pages/CourseDetails.jsx";
+
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -32,6 +34,10 @@ export const routes = createBrowserRouter([
   {
     path: "/courses",
     element: <Courses />,
+  },
+  {
+    path: "/courses/:courseId",
+    element: <CourseDetails />,
   },
   {
     path: "/verify-email",
