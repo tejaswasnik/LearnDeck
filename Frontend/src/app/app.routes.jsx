@@ -27,5 +27,10 @@ export const routes = createBrowserRouter([
     element: <Protected>
       <UserProfile />
     </Protected>,
+  }, {
+    path: "/dashboard",
+    element: <Protected>
+      <h1>Dashboard</h1>
+    </Protected>
   }
 ]);

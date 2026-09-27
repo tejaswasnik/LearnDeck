@@ -169,16 +169,6 @@ export default function UserProfile() {
                                     <span className="px-3 py-1 bg-[#232323] text-[#c4c4c4] capitalize rounded-md font-medium">
                                         {user.role || 'student'}
                                     </span>
-                                    <span className="text-[#b8ff00] font-semibold flex items-center gap-1">
-                                        <svg
-                                            className="w-4 h-4"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                        </svg>
-                                        Top 5% Learner
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -187,7 +177,7 @@ export default function UserProfile() {
                         <div className="flex items-center gap-3">
                             <button
                                 onClick={() => setShowEditModal(true)}
-                                className="px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg flex items-center gap-2 transition-colors"
+                                className="px-5 py-2.5 bg-[#333333] hover:bg-[#444444] text-white rounded-[9px] flex items-center gap-2 transition-colors"
                             >
                                 <svg
                                     className="w-5 h-5"
@@ -197,19 +187,6 @@ export default function UserProfile() {
                                     <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                                 </svg>
                                 Edit Profile
-                            </button>
-                            <button
-                                onClick={shareProfile}
-                                className="px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-gray-300 rounded-lg flex items-center gap-2 transition-colors"
-                            >
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
-                                </svg>
-                                Share Profile
                             </button>
                         </div>
                     </div>
@@ -290,22 +267,6 @@ export default function UserProfile() {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between">
-                            <span className="text-sm text-gray-500">
-                                SSO provided by LearnDeck Okta Portal
-                            </span>
-                            <button className="text-sm text-[#b8ff00] hover:underline flex items-center gap-1">
-                                Request Field Update
-                                <svg
-                                    className="w-4 h-4"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
-                                </svg>
-                            </button>
-                        </div>
                     </section>
 
                     {/* Security & Preferences */}
@@ -328,30 +289,30 @@ export default function UserProfile() {
 
                         <div className="space-y-4">
                             {/* Change Password */}
-                            <div className="flex items-center justify-between px-4 py-3 bg-gray-900 rounded-lg">
+                            <div className="flex items-center justify-between px-4 py-3 bg-[#222222] rounded-[9px]">
                                 <div>
                                     <h3 className="text-white font-semibold text-sm">
                                         Change Password
                                     </h3>
-                                    <p className="text-gray-500 text-xs mt-0.5">
+                                    <p className="text-[#a1a1aa] text-xs mt-0.5">
                                         Last updated 45 days ago • Masked
                                     </p>
                                 </div>
                                 <button
                                     onClick={() => setShowPasswordModal(true)}
-                                    className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded-lg transition-colors"
+                                    className="px-4 py-2 bg-[#333333] hover:bg-[#444444] text-white text-sm rounded-[6px] transition-colors"
                                 >
                                     Update
                                 </button>
                             </div>
 
                             {/* Email Notifications */}
-                            <div className="flex items-center justify-between px-4 py-3 bg-gray-900 rounded-lg">
+                            <div className="flex items-center justify-between px-4 py-3 bg-[#222222] rounded-[9px]">
                                 <div>
                                     <h3 className="text-white font-semibold text-sm">
                                         Email Course Digests & Reminders
                                     </h3>
-                                    <p className="text-gray-500 text-xs mt-0.5">
+                                    <p className="text-[#a1a1aa] text-xs mt-0.5">
                                         Daily flashcard schedule alerts
                                     </p>
                                 </div>
@@ -377,7 +338,7 @@ export default function UserProfile() {
                         <div className="mt-6 pt-4 border-t border-[#2a2a2a] flex items-center justify-end">
                             <button
                                 onClick={confirmDeleteAccount}
-                                className="px-4 py-2 bg-gray-900 hover:bg-red-900/30 text-red-500 hover:text-red-400 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2"
+                                className="px-4 py-2 bg-[#222222] hover:bg-[#3a1c1c] text-red-500 hover:text-red-400 text-sm font-semibold rounded-[9px] transition-colors flex items-center gap-2"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -438,7 +399,7 @@ export default function UserProfile() {
                                 <button
                                     type="button"
                                     onClick={() => setShowEditModal(false)}
-                                    className="px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                                    className="px-5 py-2.5 bg-[#333333] hover:bg-[#444444] text-white rounded-[9px] transition-colors"
                                 >
                                     Cancel
                                 </button>
@@ -517,7 +478,7 @@ export default function UserProfile() {
                                 <button
                                     type="button"
                                     onClick={() => setShowPasswordModal(false)}
-                                    className="px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                                    className="px-5 py-2.5 bg-[#333333] hover:bg-[#444444] text-white rounded-[9px] transition-colors"
                                 >
                                     Cancel
                                 </button>
