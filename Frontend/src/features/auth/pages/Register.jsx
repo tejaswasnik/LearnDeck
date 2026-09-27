@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import useAuth from "../hook/useAuth.js";
+import Navbar from "../../../components/Navbar";
 
 const Register = () => {
   const [fullName, setFullName] = useState("");
@@ -19,7 +20,7 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-surface-container-lowest text-on-surface h-screen flex flex-col justify-between selection:bg-primary-container selection:text-surface-container-lowest antialiased overflow-hidden relative">
+    <div className="bg-surface-container-lowest text-on-surface min-h-screen flex flex-col selection:bg-primary-container selection:text-surface-container-lowest antialiased overflow-hidden relative">
       {/* Atmospheric Glow & Background Grid Texture */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-[10%] sm:-top-[20%] left-1/2 -translate-x-1/2 w-[350px] sm:w-[500px] lg:w-[700px] h-[350px] sm:h-[450px] lg:h-[550px] bg-primary-container/5 blur-[90px] sm:blur-[140px] rounded-full" />
@@ -29,48 +30,10 @@ const Register = () => {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 w-full px-4 sm:px-8 py-4 sm:py-5 flex items-center justify-between border-b border-surface-container">
-        <Link
-          to="/"
-          className="flex items-center gap-2 group transition-all duration-150 active:scale-[0.98]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-            className="w-7 h-7"
-            fill="none"
-          >
-            <rect
-              width="48"
-              height="48"
-              rx="12"
-              fill="#1A1A1A"
-              stroke="#333333"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M24 10L27.5 20.5L38 24L27.5 27.5L24 38L20.5 27.5L10 24L20.5 20.5L24 10Z"
-              fill="#AAFF00"
-            />
-            <circle cx="24" cy="24" r="3" fill="#0D0D0D" />
-          </svg>
-          <span className="text-headline-sm font-bold text-primary tracking-tight">
-            LearnDeck
-          </span>
-        </Link>
-        <Link
-          to="/"
-          className="text-label-md text-secondary hover:text-primary transition-colors flex items-center gap-1.5 py-1.5 px-3 rounded-lg hover:bg-surface-container/50"
-        >
-          <span className="material-symbols-outlined text-[18px]">
-            arrow_back
-          </span>
-          <span className="hidden sm:inline">Back to homepage</span>
-        </Link>
-      </header>
+      <Navbar />
 
       {/* Main Content – Two-Column Layout */}
-      <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-2 w-full min-h-0">
+      <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-2 w-full min-h-0 pt-[68px]">
         {/* Left Column – Register Form */}
         <div className="flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 py-8 w-full h-full overflow-y-auto">
           <div className="w-full max-w-[440px]">

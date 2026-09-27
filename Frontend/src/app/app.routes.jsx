@@ -2,11 +2,11 @@ import { createBrowserRouter } from "react-router";
 import Login from "../features/auth/pages/Login.jsx";
 import Register from "../features/auth/pages/Register.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
-
+import LandingPage from "../features/landing/pages/LandingPage.jsx";
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <h1>Landing Page</h1>,
+    element: <LandingPage />,
   },
   {
     path: "/login",
