@@ -11,6 +11,8 @@ const useAuth = () => {
       dispatch(setUser(data));
     } catch (error) {
       console.error("Error registering user:", error);
+    } finally {
+      dispatch(setLoading(false));
     }
   }
   const handleLogin = async (credentials) => {
@@ -20,6 +22,8 @@ const useAuth = () => {
       dispatch(setUser(data));
     } catch (error) {
       console.error("Error logging in user:", error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   const handleGetMe = async () => {
@@ -29,6 +33,8 @@ const useAuth = () => {
       dispatch(setUser(data));
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return { handleRegister, handleLogin, handleGetMe };

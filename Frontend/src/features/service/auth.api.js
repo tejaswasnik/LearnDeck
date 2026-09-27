@@ -9,7 +9,7 @@ export async function registerUser(userData) {
     const response = await authApi.post("/auth/register", userData);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.response?.data || error.message;
   }
 }
 
@@ -18,7 +18,7 @@ export async function loginUser(credentials) {
     const response = await authApi.post("/auth/login", credentials);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.response?.data || error.message;
   }
 }
 
@@ -27,6 +27,6 @@ export async function getMe() {
     const response = await authApi.get("/auth/getme");
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.response?.data || error.message;
   }
 }
