@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { setUser, setLoading } from "../state/auth.slice.js";
 import { loginUser, registerUser, getMe } from "../service/auth.api.js";
