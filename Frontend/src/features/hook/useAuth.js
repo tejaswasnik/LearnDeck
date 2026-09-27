@@ -8,7 +8,7 @@ const useAuth = () => {
     try {
       dispatch(setLoading(true));
       const data = await registerUser(userData);
-      dispatch(setUser(data));
+      dispatch(setUser(data.user)); // Extracted just the user object from the response
     } catch (error) {
       console.error("Error registering user:", error);
     } finally {
@@ -19,7 +19,7 @@ const useAuth = () => {
     try {
       dispatch(setLoading(true));
       const data = await loginUser(credentials);
-      dispatch(setUser(data));
+      dispatch(setUser(data.user)); // Extracted just the user object from the response
     } catch (error) {
       console.error("Error logging in user:", error);
     } finally {
@@ -30,9 +30,9 @@ const useAuth = () => {
     try {
       dispatch(setLoading(true));
       const data = await getMe();
-      dispatch(setUser(data));
+      dispatch(setUser(data.user)); // Extracted just the user object from the response
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      dispatch(setUser(null));
     } finally {
       dispatch(setLoading(false));
     }

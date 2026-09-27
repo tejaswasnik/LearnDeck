@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
+import redis from "../config/cache.js";
 export async function authMiddleware(req, res, next) {
   try {
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
