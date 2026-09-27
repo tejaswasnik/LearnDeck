@@ -185,7 +185,7 @@ export async function googleStrategyCallback(accessToken, refreshToken, profile,
   try {
     const email = profile.emails[0].value;
     let user = await userModel.findOne({ email });
-    
+
     if (!user) {
       user = await userModel.create({
         name: profile.displayName,

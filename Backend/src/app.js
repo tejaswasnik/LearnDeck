@@ -1,6 +1,7 @@
 import express from "express";
 import authRouter from "../src/routes/auth.routes.js";
 import userRouter from "../src/routes/user.routes.js";
+import courseRouter from "../src/routes/course.routes.js";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import passport from "passport";
@@ -25,4 +26,5 @@ passport.use(
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/courses", courseRouter);
 export default app;

@@ -5,6 +5,9 @@ import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 import LandingPage from "../features/landing/pages/LandingPage.jsx";
 import UserProfile from "../features/users/pages/UserProfile.jsx";
 import Protected from "../components/Protected.jsx";
+import Guest from "../components/Guest.jsx";
+import StudentDashboard from "../features/users/pages/StudentDashboard.jsx";
+import Courses from "../features/courses/pages/Courses.jsx";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -12,11 +15,23 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <Guest>
+        <Login />
+      </Guest>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <Guest>
+        <Register />
+      </Guest>
+    ),
+  },
+  {
+    path: "/courses",
+    element: <Courses />,
   },
   {
     path: "/verify-email",
@@ -24,13 +39,18 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/me",
-    element: <Protected>
-      <UserProfile />
-    </Protected>,
-  }, {
+    element: (
+      <Protected>
+        <UserProfile />
+      </Protected>
+    ),
+  },
+  {
     path: "/dashboard",
-    element: <Protected>
-      <h1>Dashboard</h1>
-    </Protected>
-  }
+    element: (
+      <Protected>
+        <StudentDashboard />
+      </Protected>
+    ),
+  },
 ]);
