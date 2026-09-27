@@ -45,6 +45,16 @@ if (!process.env.REDIS_PASSWORD) {
     "REDIS_PASSWORD is not defined in the environment variables.",
   );
 }
+if (!process.env.GOOGLE_CLIENT_ID) {
+  throw new Error(
+    "GOOGLE_CLIENT_ID is not defined in the environment variables.",
+  );
+}
+if (!process.env.GOOGLE_CLIENT_SECRET) {
+  throw new Error(
+    "GOOGLE_CLIENT_SECRET is not defined in the environment variables.",
+  );
+}
 
 const config = {
   PORT: process.env.PORT,
@@ -59,6 +69,8 @@ const config = {
   redisPort: process.env.REDIS_PORT,
   redisUsername: process.env.REDIS_USERNAME,
   redisPassword: process.env.REDIS_PASSWORD,
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };
 
 export default config;

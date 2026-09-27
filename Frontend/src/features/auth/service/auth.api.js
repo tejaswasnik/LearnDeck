@@ -40,3 +40,20 @@ export async function verifyEmail(token) {
   }
 }
 
+export async function logoutUser() {
+  try {
+    const response = await authApi.post("/auth/logout");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}
+
+export async function googleAuth() {
+  try {
+    const response = await authApi.get("/auth/google");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}

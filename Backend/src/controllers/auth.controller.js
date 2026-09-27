@@ -3,6 +3,7 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import sendEmail from "../services/mail.service.js";
 import redis from "../config/cache.js";
+import crypto from "crypto";
 async function sendTokenResponse(user, res, message) {
   const token = jwt.sign(
     { id: user._id, email: user.email },
@@ -161,6 +162,42 @@ export async function verifyEmailController(req, res) {
       success: false,
       message: "Invalid or expired verification token.",
     });
+  }
+}
+
+export async function googleAuthCallbackController(req, res) {
+  try {
+    const user = req.user;
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      config.jwtSecret,
+      { expiresIn: "7d" }
+    );
+    res.cookie("token", token);
+    res.redirect(`${config.frontendURL}/`);
+  } catch (error) {
+    console.error("Google authentication error:", error);
+    res.redirect(`${config.frontendURL}/login?error=auth_failed`);
+  }
+}
+
+export async function googleStrategyCallback(accessToken, refreshToken, profile, done) {
+  try {
+    const email = profile.emails[0].value;
+    let user = await userModel.findOne({ email });
+    
+    if (!user) {
+      user = await userModel.create({
+        name: profile.displayName,
+        email: email,
+        password: crypto.randomBytes(16).toString("hex"),
+        photourl: profile.photos && profile.photos.length > 0 ? profile.photos[0].value : undefined,
+        verified: true,
+      });
+    }
+    return done(null, user);
+  } catch (error) {
+    return done(error, null);
   }
 }
 

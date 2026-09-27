@@ -3,16 +3,19 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import useAuth from "../hook/useAuth.js";
 
-const Login = () => {
+const Register = () => {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { handleLogin } = useAuth();
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const { handleRegister } = useAuth();
   const { loading } = useSelector((state) => state.auth);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await handleLogin({ email, password });
+    if (!termsAccepted) return;
+    await handleRegister({ name: fullName, email, password });
   };
 
   return (
@@ -20,6 +23,7 @@ const Login = () => {
       {/* Atmospheric Glow & Background Grid Texture */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-[10%] sm:-top-[20%] left-1/2 -translate-x-1/2 w-[350px] sm:w-[500px] lg:w-[700px] h-[350px] sm:h-[450px] lg:h-[550px] bg-primary-container/5 blur-[90px] sm:blur-[140px] rounded-full" />
+        <div className="absolute -bottom-24 -right-16 w-[300px] lg:w-[400px] h-[300px] lg:h-[400px] rounded-full bg-primary-container/5 blur-[100px] pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(14,14,14,0.85)_100%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#201f1f18_1px,transparent_1px),linear-gradient(to_bottom,#201f1f18_1px,transparent_1px)] bg-[size:48px_48px] opacity-40" />
       </div>
@@ -67,27 +71,52 @@ const Login = () => {
 
       {/* Main Content – Two-Column Layout */}
       <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-2 w-full min-h-0">
-        {/* Left Column – Login Form */}
-        <div className="flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 py-12 w-full">
+        {/* Left Column – Register Form */}
+        <div className="flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 py-8 w-full h-full overflow-y-auto">
           <div className="w-full max-w-[440px]">
             {/* Title Block */}
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left mb-10 w-full">
               <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-3">
-                Login to LearnDeck
+                Create your account
               </h1>
               <p className="text-body-sm font-medium text-[#71717A]">
-                Master your knowledge with smart flashcards
+                Start mastering skills with smart courses &amp; interactive decks.
               </p>
             </div>
 
             {/* Form Area */}
             <div className="w-full space-y-6">
               <form className="space-y-6" onSubmit={onSubmit}>
+                {/* Full Name Field */}
+                <div className="space-y-1.5">
+                  <label
+                    className="block text-body-sm text-[#71717A]"
+                    htmlFor="fullname"
+                  >
+                    Full name
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#71717A] text-[22px] pointer-events-none">
+                      badge
+                    </span>
+                    <input
+                      autoComplete="name"
+                      className="w-full h-12 pl-12 pr-4 rounded-xl bg-[#1A1A1A] border border-[#333333] text-primary placeholder-[#52525B] text-body-lg transition-all duration-150 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:bg-[#1C1C1C]"
+                      id="fullname"
+                      placeholder="Jane Doe"
+                      required
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </div>
+                </div>
+
                 {/* Email Field */}
                 <div className="space-y-1.5">
                   <label
                     className="block text-body-sm text-[#71717A]"
-                    htmlFor="identifier"
+                    htmlFor="email"
                   >
                     Email address
                   </label>
@@ -96,12 +125,12 @@ const Login = () => {
                       mail
                     </span>
                     <input
-                      autoComplete="username"
+                      autoComplete="email"
                       className="w-full h-12 pl-12 pr-4 rounded-xl bg-[#1A1A1A] border border-[#333333] text-primary placeholder-[#52525B] text-body-lg transition-all duration-150 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:bg-[#1C1C1C]"
-                      id="identifier"
-                      placeholder="name@domain.com"
+                      id="email"
+                      placeholder="jane@domain.com"
                       required
-                      type="text"
+                      type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
@@ -121,10 +150,11 @@ const Login = () => {
                       lock
                     </span>
                     <input
-                      autoComplete="current-password"
+                      autoComplete="new-password"
                       className="w-full h-12 pl-12 pr-12 rounded-xl bg-[#1A1A1A] border border-[#333333] text-primary placeholder-[#52525B] text-body-lg transition-all duration-150 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:bg-[#1C1C1C]"
                       id="password"
-                      placeholder="••••••••••••"
+                      minLength={8}
+                      placeholder="At least 8 characters"
                       required
                       type={showPassword ? "text" : "password"}
                       value={password}
@@ -143,23 +173,35 @@ const Login = () => {
                   </div>
                 </div>
 
-                {/* Helpers – Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between pt-1">
-                  <label className="flex items-center gap-2 cursor-pointer select-none group">
-                    <input
-                      className="w-4 h-4 rounded bg-[#181818] border-[#3E3E3E] text-primary-container focus:ring-primary-container focus:ring-offset-0 focus:ring-1 transition cursor-pointer"
-                      type="checkbox"
-                    />
-                    <span className="text-body-sm text-[#71717A] group-hover:text-[#A1A1AA] transition-colors">
-                      Keep me signed in
+                {/* Terms & Privacy */}
+                <div className="pt-1">
+                  <label className="flex items-start gap-2 cursor-pointer select-none group">
+                    <div className="relative flex items-center mt-0.5">
+                      <input
+                        className="peer sr-only"
+                        id="terms"
+                        required
+                        type="checkbox"
+                        checked={termsAccepted}
+                        onChange={(e) => setTermsAccepted(e.target.checked)}
+                      />
+                      <div className="w-5 h-5 rounded border border-[#333333] bg-[#1A1A1A] peer-checked:bg-primary-container peer-checked:border-primary-container transition-colors flex items-center justify-center shadow-sm">
+                        <span className="material-symbols-outlined text-[#1A1A1A] text-[16px] opacity-0 peer-checked:opacity-100 transition-opacity font-bold">
+                          check
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-body-sm text-[#71717A] group-hover:text-[#A1A1AA] transition-colors leading-relaxed pt-0.5">
+                      I agree to the{" "}
+                      <Link to="#" className="text-[#A1A1AA] hover:text-white hover:underline transition-colors">
+                        Terms of Service
+                      </Link>{" "}
+                      and{" "}
+                      <Link to="#" className="text-[#A1A1AA] hover:text-white hover:underline transition-colors">
+                        Privacy Policy
+                      </Link>
                     </span>
                   </label>
-                  <button
-                    type="button"
-                    className="text-body-sm text-[#71717A] hover:text-[#A1A1AA] hover:underline transition-all cursor-pointer"
-                  >
-                    Forgot password?
-                  </button>
                 </div>
 
                 {/* Submit Button */}
@@ -167,16 +209,16 @@ const Login = () => {
                   <button
                     className="w-full h-12 rounded-xl bg-primary-container text-surface-container-lowest text-label-lg font-bold shadow-[0_4px_14px_rgba(178,247,0,0.15)] hover:bg-tertiary-fixed active:scale-[0.99] transition-all flex items-center justify-center gap-2 tracking-wide cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !termsAccepted}
                   >
                     {loading ? (
                       <>
                         <span className="w-[18px] h-[18px] border-2 border-surface-container-lowest border-t-transparent rounded-full animate-spin" />
-                        <span>Logging in…</span>
+                        <span>Creating account…</span>
                       </>
                     ) : (
                       <>
-                        <span>Log in</span>
+                        <span>Create account</span>
                         <span className="material-symbols-outlined text-[18px] font-bold">
                           arrow_forward
                         </span>
@@ -199,6 +241,9 @@ const Login = () => {
                 <button
                   className="h-12 px-4 rounded-xl bg-transparent border border-[#262626] hover:bg-[#1A1A1A] transition-colors flex items-center justify-center gap-2.5 text-body-md text-[#71717A] hover:text-[#A1A1AA] font-medium active:scale-[0.98] cursor-pointer"
                   type="button"
+                  onClick={() => {
+                    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+                  }}
                 >
                   <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                     <path
@@ -222,15 +267,15 @@ const Login = () => {
                 </button>
               </div>
 
-              {/* Sign Up Prompt */}
+              {/* Login Prompt */}
               <div className="text-center lg:text-left pt-6">
                 <p className="text-body-sm text-[#52525B]">
-                  Don&apos;t have an account?
+                  Already have an account?
                   <Link
-                    to="/register"
+                    to="/login"
                     className="text-[#71717A] hover:text-[#A1A1AA] hover:underline transition-colors ml-1.5 inline-flex items-center gap-0.5"
                   >
-                    Sign up
+                    Log in
                   </Link>
                 </p>
               </div>
@@ -238,39 +283,42 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right Column – Hero Image Panel (Desktop Only) */}
+        {/* Right Column – Hero Feature Panel (Desktop Only) */}
         <div className="hidden lg:block relative w-full h-full border-l border-surface-container overflow-hidden bg-surface-container-low group">
           {/* Decorative glow blobs */}
           <div className="absolute -top-12 -right-12 w-64 h-64 bg-primary-container/15 blur-3xl rounded-full pointer-events-none z-10" />
-          <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-primary-container/10 blur-3xl rounded-full pointer-events-none z-10" />
 
           {/* Hero image */}
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT0T_3yQljm-qFN7vI9Nwb79W0d_RpwKKfVqmPir6Eq9sm0CVN5MWnvIl5OY6R7Ir77opBrHJT1ZymoD6CcuELARDh_mg-sSVW8vk0ijlyqLPy8uhEsIkemv5LcEWCifykx8NtHSVc06TWKOkcSq7IIaTNyDkfbaXVdNAfOqWTgSdZr-wahqcr8lGAvAnOH4cMfLG7efeurJE4Z3hoBG-14bZVzhFdZvnCoyXVXTmPFNlcUiElT8NR"
-            alt="Modern workspace with coding tutorials on screens"
-            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-          />
+          <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJ7iT4jq_FGu9f6zb3VRXFyXcxsoAwHNourKuGNhaZX3Bn3hNk3-BlXjTb2biE6smrt1YkicS57WKytUimBV8g4t4vPlObF-udgKDk3dQWqa9mTXDAor6BSSmgQaWDTzIu6wKEiqNUd7PHlnqUsuN5gY6iBWdj3xDzTPhLycK1EyhdF5S0ZtqZrbzpS8vqs9oquR2vnnDKNSNUfxj2BE4h525833dEtfpbVEdYryjSjBw8j8v2Zm4e")' }} />
 
           {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/40 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(14,14,14,0.6)_100%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/60 to-[#0e0e0e]/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#131313] via-transparent to-transparent opacity-90 pointer-events-none" />
 
           {/* Info card overlay */}
           <div className="absolute bottom-0 inset-x-0 p-8 lg:p-12 z-20 flex flex-col gap-3 pointer-events-none">
-            <div className="p-6 rounded-2xl bg-surface-container-lowest/80 backdrop-blur-md border border-[#333333] shadow-2xl flex flex-col gap-3 max-w-lg">
-              <div className="inline-flex items-center gap-2 text-primary-container text-label-sm font-semibold tracking-wider uppercase">
+            <div className="p-6 rounded-2xl bg-surface-container-lowest/80 backdrop-blur-2xl border border-[#333333] shadow-2xl flex flex-col gap-3 max-w-lg">
+              <div className="inline-flex items-center gap-2 text-primary-container text-label-sm font-semibold tracking-widest uppercase">
                 <span className="material-symbols-outlined text-[16px]">
-                  school
+                  view_carousel
                 </span>
-                <span>PREMIER VIDEO LEARNING</span>
+                <span>Premier Tech &amp; Coding</span>
               </div>
               <h2 className="text-headline-md font-bold text-primary tracking-tight leading-snug">
-                Master any skill with expert-led courses.
+                Accelerate your mastery with expert-guided learning.
               </h2>
               <p className="text-body-md text-secondary line-clamp-2">
-                Explore interactive courses, real-world projects, and recognized
-                certificates taught by industry leaders.
+                Dive into interactive courses, hands-on projects, and verified credentials crafted by top software engineers and creators.
               </p>
+              
+              <div className="flex items-center gap-4 pt-2">
+                <div className="flex -space-x-2 overflow-hidden">
+                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0e0e0e] bg-surface-variant flex items-center justify-center font-label-sm text-primary">AL</div>
+                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0e0e0e] bg-surface-container-high flex items-center justify-center font-label-sm text-primary-container">JD</div>
+                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0e0e0e] bg-surface-bright flex items-center justify-center font-label-sm text-primary">RK</div>
+                </div>
+                <span className="text-body-sm text-secondary">Active learners worldwide</span>
+              </div>
             </div>
           </div>
         </div>
@@ -279,4 +327,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
