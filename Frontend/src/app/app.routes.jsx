@@ -4,6 +4,7 @@ import Register from "../features/auth/pages/Register.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 import LandingPage from "../features/landing/pages/LandingPage.jsx";
 import UserProfile from "../features/users/pages/UserProfile.jsx";
+import Protected from "../components/Protected.jsx";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,8 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/me",
-    element: <UserProfile />,
+    element: <Protected>
+      <UserProfile />
+    </Protected>,
   }
 ]);

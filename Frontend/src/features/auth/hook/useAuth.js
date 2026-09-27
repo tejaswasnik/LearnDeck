@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setUser, setLoading } from "../state/auth.slice.js";
-import { loginUser, registerUser, getMe } from "../service/auth.api.js";
+import { loginUser, registerUser, getMe, logoutUser, googleAuth } from "../service/auth.api.js";
 const useAuth = () => {
   const dispatch = useDispatch();
   async function handleRegister(userData) {
