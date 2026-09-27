@@ -55,6 +55,11 @@ if (!process.env.GOOGLE_CLIENT_SECRET) {
     "GOOGLE_CLIENT_SECRET is not defined in the environment variables.",
   );
 }
+if (!process.env.IMAGEKIT_PRIVATE_KEY) {
+  throw new Error(
+    "IMAGEKIT_PRIVATE_KEY is not defined in the environment variables.",
+  );
+}
 
 const config = {
   PORT: process.env.PORT,
@@ -71,6 +76,7 @@ const config = {
   redisPassword: process.env.REDIS_PASSWORD,
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
 };
 
 export default config;

@@ -1,5 +1,6 @@
 import express from "express";
 import authRouter from "../src/routes/auth.routes.js";
+import userRouter from "../src/routes/user.routes.js";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import passport from "passport";
@@ -18,9 +19,10 @@ passport.use(
       clientSecret: config.googleClientSecret,
       callbackURL: "/api/auth/google/callback",
     },
-    googleStrategyCallback
+    googleStrategyCallback,
   ),
 );
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 export default app;
