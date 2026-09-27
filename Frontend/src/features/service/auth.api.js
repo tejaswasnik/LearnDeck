@@ -30,3 +30,13 @@ export async function getMe() {
     throw error.response?.data || error.message;
   }
 }
+
+export async function verifyEmail(token) {
+  try {
+    const response = await authApi.post("/auth/verify-email", { token });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}
+
