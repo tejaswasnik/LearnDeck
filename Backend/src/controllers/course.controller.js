@@ -63,6 +63,9 @@ export async function updateCourseController(req, res) {
     if (price?.currency) {
       updateData["price.currency"] = price.currency;
     }
+    if (req.body.isPublished !== undefined) {
+      updateData.isPublished = req.body.isPublished;
+    }
     if (req.file) {
       const uploadResult = await uploadImage(req.file);
       updateData.courseThumbnail = uploadResult.url;
@@ -169,6 +172,52 @@ export async function getAllCoursesController(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Error fetching courses",
+      error: error.message,
+    });
+  }
+}
+
+export async function getInstructorCoursesController(req, res) {
+  try {
+    const creator = req.user.id;
+    const { search, isPublished, page = 1, limit = 12 } = req.query;
+
+    const query = { creator };
+    
+    if (isPublished !== undefined && isPublished !== 'all') {
+      query.isPublished = isPublished === 'true';
+    }
+
+    if (search) {
+      query.$or = [
+        { courseTitle: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const courses = await courseModel.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    const totalCourses = await courseModel.countDocuments(query);
+    const totalPages = Math.ceil(totalCourses / parseInt(limit));
+
+    return res.status(200).json({
+      message: "Instructor courses fetched successfully",
+      courses,
+      pagination: {
+        totalCourses,
+        totalPages,
+        currentPage: parseInt(page),
+        limit: parseInt(limit)
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error fetching instructor courses",
       error: error.message,
     });
   }

@@ -6,6 +6,7 @@ import {
   getCourseById,
   getAllCourses,
   deleteCourse,
+  getInstructorCourses,
 } from "../service/course.api.js";
 
 const useCourse = () => {
@@ -51,6 +52,20 @@ const useCourse = () => {
       dispatch(setLoading(true));
       const data = await getAllCourses(params);
       dispatch(setCourses(data));
+      return data;
+    } catch (error) {
+      dispatch(setError(error));
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+  const handleGetInstructorCourses = async (params = {}) => {
+    try {
+      dispatch(setLoading(true));
+      const data = await getInstructorCourses(params);
+      dispatch(setCourses(data));
+      return data;
     } catch (error) {
       dispatch(setError(error));
       throw error;
@@ -75,6 +90,7 @@ const useCourse = () => {
     handleUpdateCourse,
     handleGetCourseById,
     handleGetAllCourses,
+    handleGetInstructorCourses,
     handleDeleteCourse,
   };
 };

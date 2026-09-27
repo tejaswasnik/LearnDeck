@@ -5,6 +5,7 @@ import {
   getCourseByIdController,
   getAllCoursesController,
   deleteCourseController,
+  getInstructorCoursesController,
 } from "../controllers/course.controller.js";
 import { instructorAuth } from "../middlewares/auth.middleware.js";
 import multer from "multer";
@@ -29,5 +30,6 @@ courseRouter.patch(
 );
 courseRouter.get("/:courseId", getCourseByIdController);
 courseRouter.get("/", getAllCoursesController);
+courseRouter.get("/instructor/courses", instructorAuth, getInstructorCoursesController);
 courseRouter.delete("/:courseId", instructorAuth, deleteCourseController);
 export default courseRouter;

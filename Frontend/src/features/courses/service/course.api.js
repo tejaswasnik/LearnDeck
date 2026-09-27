@@ -43,6 +43,15 @@ export async function getAllCourses(params = {}) {
   }
 }
 
+export async function getInstructorCourses(params = {}) {
+  try {
+    const response = await courseApi.get("/courses/instructor/courses", { params });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
 export async function deleteCourse(courseId) {
   try {
     const response = await courseApi.delete(`/courses/${courseId}`);

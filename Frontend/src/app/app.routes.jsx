@@ -9,6 +9,7 @@ import Guest from "../components/Guest.jsx";
 import StudentDashboard from "../features/users/pages/StudentDashboard.jsx";
 import Courses from "../features/courses/pages/Courses.jsx";
 import CourseDetails from "../features/courses/pages/CourseDetails.jsx";
+import InstructorDashboard from "../features/courses/pages/InstructorDashboard.jsx";
 
 export const routes = createBrowserRouter([
   {
@@ -56,6 +57,14 @@ export const routes = createBrowserRouter([
     element: (
       <Protected>
         <StudentDashboard />
+      </Protected>
+    ),
+  },
+  {
+    path: "/instructor/dashboard",
+    element: (
+      <Protected>
+        <InstructorDashboard />
       </Protected>
     ),
   },
