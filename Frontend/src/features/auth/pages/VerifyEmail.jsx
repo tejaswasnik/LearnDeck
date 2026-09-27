@@ -37,7 +37,7 @@ const VerifyEmail = () => {
   }, [token]);
 
   return (
-    <div className="bg-[#131313] font-body-md text-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-surface-container-lowest">
+    <div className="bg-[#131313] font-body-md text-body-md text-on-surface h-screen selection:bg-primary-container selection:text-surface-container-lowest">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 w-full z-50 bg-[#131313]/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
         <div className="h-16 max-w-[1200px] mx-auto px-4 md:px-8 flex items-center justify-between">

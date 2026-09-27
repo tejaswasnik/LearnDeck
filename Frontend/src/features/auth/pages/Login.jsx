@@ -17,7 +17,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-surface-container-lowest text-on-surface min-h-screen flex flex-col selection:bg-primary-container selection:text-surface-container-lowest antialiased overflow-hidden relative">
+    <div className="bg-surface-container-lowest text-on-surface h-screen flex flex-col selection:bg-primary-container selection:text-surface-container-lowest antialiased overflow-hidden relative">
       {/* Atmospheric Glow & Background Grid Texture */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-[10%] sm:-top-[20%] left-1/2 -translate-x-1/2 w-[350px] sm:w-[500px] lg:w-[700px] h-[350px] sm:h-[450px] lg:h-[550px] bg-primary-container/5 blur-[90px] sm:blur-[140px] rounded-full" />
@@ -31,7 +31,7 @@ const Login = () => {
       {/* Main Content – Two-Column Layout */}
       <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-2 w-full min-h-0 pt-[68px]">
         {/* Left Column – Login Form */}
-        <div className="flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 py-12 w-full">
+        <div className="flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 py-12 w-full h-full overflow-y-auto">
           <div className="w-full max-w-[440px]">
             {/* Title Block */}
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left mb-10 w-full">
