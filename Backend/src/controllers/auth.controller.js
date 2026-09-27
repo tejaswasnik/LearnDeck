@@ -2,6 +2,7 @@ import config from "../config/config.js";
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import sendEmail from "../services/mail.service.js";
+import redis from "../config/cache.js";
 async function sendTokenResponse(user, res, message) {
   const token = jwt.sign(
     { id: user._id, email: user.email },
@@ -101,7 +102,7 @@ export async function loginController(req, res) {
 }
 export async function getMeController(req, res) {
   try {
-    const userId = req.user.id; // Assuming the user ID is stored in req.user after authentication
+    const userId = req.user.id;
     const user = await userModel.findById(userId).select("-password");
     return res.status(200).json({
       success: true,
@@ -114,7 +115,6 @@ export async function getMeController(req, res) {
     });
   }
 }
-export async function logoutController(req, res) {}
 export async function verifyEmailController(req, res) {
   try {
     const { token } = req.body;
@@ -160,6 +160,34 @@ export async function verifyEmailController(req, res) {
     return res.status(400).json({
       success: false,
       message: "Invalid or expired verification token.",
+    });
+  }
+}
+
+export async function logoutController(req, res) {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "No token found.",
+      });
+    }
+    await redis.set(token, Date.now().toString(), "EX", 60 * 60);
+
+    res.clearCookie("token");
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
     });
   }
 }
