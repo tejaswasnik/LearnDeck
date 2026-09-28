@@ -22,3 +22,33 @@ export async function uploadImage({
     throw error;
   }
 }
+
+
+export async function uploadVideo({
+  buffer,
+  originalname,
+  fileName = originalname || `video-${Date.now()}.mp4`,
+  folder = "LearnDeck/videos",
+}) {
+  try {
+    const result = await client.files.upload({
+      file: await toFile(buffer, fileName),
+      fileName,
+      folder,
+    });
+    return result;
+  } catch (error) {
+    console.error("Error uploading video:", error);
+    throw error;
+  }
+}
+
+export async function deleteVideo(publicId) {
+  try {
+    const result = await client.deleteFile(publicId);
+    return result;
+  } catch (error) {
+    console.error("Error deleting video:", error);
+    throw error;
+  }
+}

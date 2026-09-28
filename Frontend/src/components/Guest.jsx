@@ -27,6 +27,9 @@ const Guest = ({ children }) => {
   }
 
   if (user) {
+    if (user.role === 'instructor') {
+      return <Navigate to="/instructor/dashboard" replace />;
+    }
     return <Navigate to="/dashboard" replace />;
   }
 

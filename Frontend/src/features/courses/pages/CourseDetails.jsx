@@ -333,11 +333,11 @@ export default function CourseDetails() {
                                 <div className="flex items-baseline justify-between mb-4">
                                     <div>
                                         <span className="text-4xl font-bold text-white">
-                                            {course.price?.amount === 0 ? "Free" : `${course.price?.currency === 'INR' ? '₹' : '$'}${course.price?.amount}`}
+                                            {course.price?.amount === 0 ? "Free" : `${course.price?.currency?.includes('USD') ? '$' : course.price?.currency?.includes('EUR') ? '€' : '₹'}${course.price?.amount}`}
                                         </span>
                                         {course.price?.amount > 0 && (
                                             <span className="text-gray-400 ml-2 text-lg">
-                                                {course.price?.currency || 'INR'}
+                                                {course.price?.currency?.includes('USD') ? 'USD' : course.price?.currency?.includes('EUR') ? 'EUR' : 'INR'}
                                             </span>
                                         )}
                                     </div>

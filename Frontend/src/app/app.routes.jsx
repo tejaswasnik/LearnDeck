@@ -11,8 +11,13 @@ import Protected from "../components/Protected.jsx";
 import Guest from "../components/Guest.jsx";
 import StudentDashboard from "../features/users/pages/StudentDashboard.jsx";
 import Courses from "../features/courses/pages/Courses.jsx";
+import CreateCourse from "../features/courses/pages/CreateCourse.jsx";
+import EditCourse from "../features/courses/pages/EditCourse.jsx";
 import CourseDetails from "../features/courses/pages/CourseDetails.jsx";
 import InstructorDashboard from "../features/courses/pages/InstructorDashboard.jsx";
+import Lectures from "../features/lectures/pages/Lectures.jsx";
+import CreateLecture from "../features/lectures/pages/CreateLecture.jsx";
+import EditLecture from "../features/lectures/pages/EditLecture.jsx";
 
 export const routes = createBrowserRouter([
   {
@@ -64,6 +69,46 @@ export const routes = createBrowserRouter([
     element: <Courses />,
   },
   {
+    path: "/courses/create",
+    element: (
+      <Protected allowedRoles={['instructor']}>
+        <CreateCourse />
+      </Protected>
+    ),
+  },
+  {
+    path: "/courses/edit/:courseId",
+    element: (
+      <Protected allowedRoles={['instructor']}>
+        <EditCourse />
+      </Protected>
+    ),
+  },
+  {
+    path: "/courses/:courseId/lectures",
+    element: (
+      <Protected allowedRoles={['instructor']}>
+        <Lectures />
+      </Protected>
+    ),
+  },
+  {
+    path: "/courses/:courseId/lectures/create",
+    element: (
+      <Protected allowedRoles={['instructor']}>
+        <CreateLecture />
+      </Protected>
+    ),
+  },
+  {
+    path: "/courses/:courseId/lectures/edit/:lectureId",
+    element: (
+      <Protected allowedRoles={['instructor']}>
+        <EditLecture />
+      </Protected>
+    ),
+  },
+  {
     path: "/courses/:courseId",
     element: <CourseDetails />,
   },
@@ -82,7 +127,7 @@ export const routes = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <Protected>
+      <Protected allowedRoles={['student']}>
         <StudentDashboard />
       </Protected>
     ),
@@ -90,7 +135,7 @@ export const routes = createBrowserRouter([
   {
     path: "/instructor/dashboard",
     element: (
-      <Protected>
+      <Protected allowedRoles={['instructor']}>
         <InstructorDashboard />
       </Protected>
     ),

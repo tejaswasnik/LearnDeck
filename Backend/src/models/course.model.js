@@ -49,6 +49,11 @@ const courseSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    moderationStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
   },
   { timestamps: true },
 );

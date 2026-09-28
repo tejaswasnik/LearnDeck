@@ -323,7 +323,7 @@ export default function InstructorDashboard() {
                                                 </div>
                                                 {course.price && (
                                                     <span className="text-lg font-bold text-white">
-                                                        {course.price.amount === 0 ? "Free" : `${course.price.currency === 'INR' ? '₹' : '$'}${course.price.amount}`}
+                                                        {course.price.amount === 0 ? "Free" : `${course.price.currency?.includes('USD') ? '$' : course.price.currency?.includes('EUR') ? '€' : '₹'}${course.price.amount}`}
                                                     </span>
                                                 )}
                                             </div>

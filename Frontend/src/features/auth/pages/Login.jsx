@@ -14,7 +14,11 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
+      if (user.role === "instructor") {
+        navigate("/instructor/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     }
   }, [user, navigate]);
 

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import useAuth from "../features/auth/hook/useAuth.js";
 
-const Protected = ({ children }) => {
+const Protected = ({ children, allowedRoles }) => {
   const { user } = useSelector((state) => state.auth);
   const { handleGetMe } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
@@ -28,6 +28,13 @@ const Protected = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    if (user.role === 'instructor') {
+      return <Navigate to="/instructor/dashboard" replace />;
+    }
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children ? children : <Outlet />;
