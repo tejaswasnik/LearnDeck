@@ -10,7 +10,15 @@ import passport from "passport";
 import config from "./config/config.js";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { googleStrategyCallback } from "./controllers/auth.controller.js";
+import cors from "cors";
+
 const app = express();
+
+app.use(cors({
+  origin: config.frontendURL,
+  credentials: true,
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
