@@ -15,7 +15,7 @@ import cors from "cors";
 const app = express();
 
 app.use(cors({
-  origin: config.frontendURL,
+  origin: config.purefrontendURL,
   credentials: true,
 }));
 

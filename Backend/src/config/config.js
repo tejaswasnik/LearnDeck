@@ -89,6 +89,8 @@ const config = {
   imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   razorpayKeyId: process.env.RAZORPAY_KEY_ID,
   razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
+  purefrontendURL: process.env.PURE_FRONTEND_URL || "http://localhost:5173",
+  purefrontendURL: process.env.PURE_FRONTEND_URL || "http://localhost:5173",
 };
 
 export default config;
