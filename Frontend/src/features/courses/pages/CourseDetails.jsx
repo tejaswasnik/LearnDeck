@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import Navbar from "../../../components/Navbar.jsx";
 import useCourse from "../hook/useCourse.js";
+import usePayment from "../../payments/hook/usePayment.js";
 
 export default function CourseDetails() {
     const { courseId } = useParams();
@@ -17,6 +18,7 @@ export default function CourseDetails() {
 
     const { handleGetCourseById } = useCourse();
     const { user } = useSelector((state) => state.auth);
+    const { handleBuyCourse, isProcessing } = usePayment();
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -37,26 +39,25 @@ export default function CourseDetails() {
             fetchCourse();
         }
     }, [courseId]);
-    console.log(course)
     // Derived states
-    const isEnrolled = Boolean(user && course?.enrolledStudents?.some(s => s === user._id || s?._id === user._id));
+    const isEnrolled = Boolean(user && user.enrolledCourses?.some(c => c === courseId || c._id === courseId));
     const isFree = course?.price?.amount === 0;
 
-    const handleCTA = () => {
+    const handleCTA = async () => {
         if (!user) {
             navigate("/login");
             return;
         }
         if (isEnrolled) {
             navigate(`/learning/${courseId}`);
-        } else if (isFree) {
-            // Trigger existing free enrollment flow
-            console.log("Triggering free enrollment flow for course:", courseId);
-            // placeholder for existing enrollment mechanism
         } else {
-            // Trigger existing payment flow
-            console.log("Triggering payment flow for course:", courseId);
-            // placeholder for existing purchase mechanism
+            // Works for both free and paid courses
+            await handleBuyCourse(courseId, user, () => {
+                // Refresh course data to update enrollment status
+                handleGetCourseById(courseId).then((data) => {
+                    setCourse(data.course);
+                });
+            });
         }
     };
 
@@ -348,16 +349,29 @@ export default function CourseDetails() {
 
                                 <button
                                     onClick={handleCTA}
-                                    className="w-full py-4 bg-[#7ED321] hover:bg-[#6BC01F] text-black font-bold text-lg rounded-lg transition-colors flex items-center justify-center gap-2 mb-4"
+                                    disabled={isProcessing}
+                                    className={`w-full py-4 ${isProcessing ? 'bg-[#7ED321]/50 cursor-not-allowed' : 'bg-[#7ED321] hover:bg-[#6BC01F]'} text-black font-bold text-lg rounded-lg transition-colors flex items-center justify-center gap-2 mb-4`}
                                 >
-                                    {isEnrolled ? "Start Course" : isFree ? "Enroll Now" : "Buy Now"}
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        {isEnrolled ? (
-                                            <path d="M8 5v14l11-7z" />
-                                        ) : (
-                                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
-                                        )}
-                                    </svg>
+                                    {isProcessing ? (
+                                        <>
+                                            <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                            </svg>
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        <>
+                                            {isEnrolled ? "Start Course" : isFree ? "Enroll Now" : "Buy Now"}
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                {isEnrolled ? (
+                                                    <path d="M8 5v14l11-7z" />
+                                                ) : (
+                                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
+                                                )}
+                                            </svg>
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </div>

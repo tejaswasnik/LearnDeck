@@ -183,7 +183,7 @@ export async function getInstructorCoursesController(req, res) {
     const { search, isPublished, page = 1, limit = 12 } = req.query;
 
     const query = { creator };
-    
+
     if (isPublished !== undefined && isPublished !== 'all') {
       query.isPublished = isPublished === 'true';
     }

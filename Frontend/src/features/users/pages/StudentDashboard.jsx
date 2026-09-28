@@ -37,7 +37,7 @@ export default function StudentDashboard() {
             setEnrolledCourses([]);
         }
     }, [user]);
-
+    console.log(enrolledCourses)
     return (
         <div className="min-h-screen bg-[#0A0A0A] text-gray-100">
             {/* Navbar */}
@@ -230,38 +230,38 @@ export default function StudentDashboard() {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {enrolledCourses.map((course) => (
                                 <div
-                                    key={course.id}
-                                    className="bg-[#1A1A1A] rounded-xl p-6 border border-[#262626] hover:border-[#7ED321]/50 transition-all"
+                                    key={course._id || course}
+                                    className="bg-[#1A1A1A] rounded-xl p-6 border border-[#262626] hover:border-[#7ED321]/50 transition-all flex flex-col"
                                 >
                                     {/* Course card content */}
                                     <div className="mb-4">
                                         <span className="text-xs text-gray-500 uppercase tracking-wider">
-                                            {course.category}
+                                            {course.category || "Uncategorized"}
                                         </span>
                                         <h3 className="text-lg font-bold text-white mt-2 mb-1">
-                                            {course.title}
+                                            {course.courseTitle || "Unknown Course"}
                                         </h3>
                                         <p className="text-sm text-gray-400">
-                                            {course.instructor}
+                                            {course.creator?.name || "Instructor"}
                                         </p>
                                     </div>
-                                    <div className="mb-4">
+                                    <div className="mb-4 mt-auto">
                                         <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
                                             <span>Progress</span>
                                             <span className="font-semibold">
-                                                {course.progress}%
+                                                0%
                                             </span>
                                         </div>
                                         <div className="w-full bg-[#262626] h-2 rounded-full overflow-hidden">
                                             <div
                                                 className="bg-[#7ED321] h-full rounded-full transition-all"
-                                                style={{ width: `${course.progress}%` }}
+                                                style={{ width: `0%` }}
                                             />
                                         </div>
                                     </div>
                                     <Link
-                                        to={`/courses/${course.id}`}
-                                        className="w-full px-4 py-2 bg-[#262626] hover:bg-[#333333] text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                                        to={`/learn/${course._id || course}`}
+                                        className="w-full px-4 py-2 bg-[#262626] hover:bg-[#333333] text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 mt-2"
                                     >
                                         Continue Learning
                                         <svg

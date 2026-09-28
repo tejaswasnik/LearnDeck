@@ -94,7 +94,7 @@ export default function Courses() {
 
     const isUserEnrolled = (courseId) => {
         if (!user || !user.enrolledCourses) return false;
-        return user.enrolledCourses.includes(courseId);
+        return user.enrolledCourses.some(c => c === courseId || c._id === courseId);
     };
 
     const getCurrencySymbol = (currencyStr) => {

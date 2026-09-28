@@ -18,6 +18,7 @@ import InstructorDashboard from "../features/courses/pages/InstructorDashboard.j
 import Lectures from "../features/lectures/pages/Lectures.jsx";
 import CreateLecture from "../features/lectures/pages/CreateLecture.jsx";
 import EditLecture from "../features/lectures/pages/EditLecture.jsx";
+import CoursePlayer from "../features/courses/pages/CoursePlayer.jsx";
 
 export const routes = createBrowserRouter([
   {
@@ -111,6 +112,14 @@ export const routes = createBrowserRouter([
   {
     path: "/courses/:courseId",
     element: <CourseDetails />,
+  },
+  {
+    path: "/learning/:courseId",
+    element: (
+      <Protected>
+        <CoursePlayer />
+      </Protected>
+    ),
   },
   {
     path: "/verify-email",

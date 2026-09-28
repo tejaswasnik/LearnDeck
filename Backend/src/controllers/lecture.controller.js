@@ -13,6 +13,7 @@ async function createLectureController(req, res) {
             description,
             duration,
             courseId,
+            videoUrl,
         } = req.body;
 
         const actualTitle = lectureTitle || title;
@@ -25,9 +26,9 @@ async function createLectureController(req, res) {
             });
         }
 
-        if (!video) {
+        if (!video && !videoUrl) {
             return res.status(400).json({
-                message: "Video is required",
+                message: "Video file or Video URL is required",
             });
         }
 
@@ -45,18 +46,25 @@ async function createLectureController(req, res) {
             });
         }
 
-        const result = await uploadVideo({
-            buffer: video.buffer,
-            originalname: video.originalname,
-        });
+        let finalVideoUrl = videoUrl;
+        let publicId = null;
+
+        if (video) {
+            const result = await uploadVideo({
+                buffer: video.buffer,
+                originalname: video.originalname,
+            });
+            finalVideoUrl = result.url;
+            publicId = result.fileId;
+        }
 
         const lecture = await lectureModel.create({
             lectureTitle: actualTitle,
             description,
             duration,
             courseId,
-            videoUrl: result.url,
-            publicId: result.fileId,
+            videoUrl: finalVideoUrl,
+            publicId: publicId,
         });
 
         course.lectures.push(lecture._id);
@@ -134,6 +142,7 @@ async function updateLectureController(req, res) {
             title,
             description,
             duration,
+            videoUrl,
         } = req.body;
         
         const actualTitle = lectureTitle || title;
@@ -188,6 +197,16 @@ async function updateLectureController(req, res) {
 
             lecture.videoUrl = result.url;
             lecture.publicId = result.fileId;
+        } else if (videoUrl) {
+            if (lecture.publicId) {
+                try {
+                    await deleteVideo(lecture.publicId);
+                } catch (videoError) {
+                    console.log("Failed to delete old video from cloud", videoError.message);
+                }
+            }
+            lecture.videoUrl = videoUrl;
+            lecture.publicId = null;
         }
 
         await lecture.save();

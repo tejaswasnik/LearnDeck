@@ -104,7 +104,7 @@ export async function loginController(req, res) {
 export async function getMeController(req, res) {
   try {
     const userId = req.user.id;
-    const user = await userModel.findById(userId).select("-password");
+    const user = await userModel.findById(userId).populate("enrolledCourses").select("-password");
     return res.status(200).json({
       success: true,
       user,

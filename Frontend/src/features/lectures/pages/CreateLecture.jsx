@@ -9,13 +9,14 @@ const CreateLecture = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [video, setVideo] = useState(null);
+    const [videoUrl, setVideoUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!title || !video) {
-            setError('Title and Video are required');
+        if (!title || (!video && !videoUrl)) {
+            setError('Title and either Video File or Video URL are required');
             return;
         }
 
@@ -23,7 +24,12 @@ const CreateLecture = () => {
         formData.append('lectureTitle', title);
         formData.append('description', description);
         formData.append('courseId', courseId);
-        formData.append('video', video);
+        if (video) {
+            formData.append('video', video);
+        }
+        if (videoUrl) {
+            formData.append('videoUrl', videoUrl);
+        }
 
         try {
             setLoading(true);
@@ -60,14 +66,39 @@ const CreateLecture = () => {
                         onChange={e => setDescription(e.target.value)} 
                         disabled={loading}
                     />
-                    <div className="bg-[#1a1a1a] border border-[#333] p-3 rounded text-white">
-                        <label className="block text-sm text-[#a1a1aa] mb-2">Upload Video *</label>
-                        <input 
-                            type="file" 
-                            accept="video/*" 
-                            onChange={e => setVideo(e.target.files[0])} 
-                            disabled={loading}
-                        />
+                    <div className="bg-[#1a1a1a] border border-[#333] p-3 rounded text-white flex flex-col gap-3">
+                        <label className="block text-sm text-[#a1a1aa]">Media Source * (Provide one)</label>
+                        <div>
+                            <label className="block text-xs text-gray-500 mb-1">Option 1: Upload Video File</label>
+                            <input 
+                                type="file" 
+                                accept="video/*" 
+                                onChange={e => {
+                                    setVideo(e.target.files[0]);
+                                    if (e.target.files[0]) setVideoUrl('');
+                                }} 
+                                disabled={loading || videoUrl !== ''}
+                            />
+                        </div>
+                        <div className="flex items-center">
+                            <hr className="flex-1 border-[#333]" />
+                            <span className="px-3 text-xs text-gray-500">OR</span>
+                            <hr className="flex-1 border-[#333]" />
+                        </div>
+                        <div>
+                            <label className="block text-xs text-gray-500 mb-1">Option 2: Video URL (e.g. YouTube Link)</label>
+                            <input 
+                                type="url"
+                                className="w-full bg-[#131313] border border-[#333] p-2 rounded text-white text-sm"
+                                placeholder="https://www.youtube.com/watch?v=..."
+                                value={videoUrl}
+                                onChange={e => {
+                                    setVideoUrl(e.target.value);
+                                    if (e.target.value) setVideo(null);
+                                }}
+                                disabled={loading || video !== null}
+                            />
+                        </div>
                     </div>
                     <button 
                         type="submit" 
