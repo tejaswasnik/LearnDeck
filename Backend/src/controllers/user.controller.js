@@ -101,3 +101,28 @@ export async function deleteUserController(req, res) {
     });
   }
 }
+
+export async function forgotPasswordController(req, res) {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    await sendEmail(
+      user.email,
+      "Password Reset",
+      "Please click the link to reset your password.",
+    );
+    res.status(200).json({
+      message: "Password reset email sent successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to process forgot password request",
+      error: error.message,
+    });
+  }
+}

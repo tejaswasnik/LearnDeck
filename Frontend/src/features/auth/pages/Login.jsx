@@ -124,12 +124,12 @@ const Login = () => {
                       Keep me signed in
                     </span>
                   </label>
-                  <button
-                    type="button"
+                  <Link
+                    to="/forgot-password"
                     className="text-body-sm text-[#71717A] hover:text-[#A1A1AA] hover:underline transition-all cursor-pointer"
                   >
                     Forgot password?
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Submit Button */}

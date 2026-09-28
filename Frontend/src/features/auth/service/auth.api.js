@@ -57,3 +57,21 @@ export async function googleAuth() {
     throw error.response?.data || error.message;
   }
 }
+
+export async function forgotPassword(email) {
+  try {
+    const response = await authApi.post("/auth/forgot-password", { email });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}
+
+export async function resetPassword(token, password) {
+  try {
+    const response = await authApi.post(`/auth/reset-password/${token}`, { password });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}

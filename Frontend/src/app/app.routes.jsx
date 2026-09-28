@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router";
 import Login from "../features/auth/pages/Login.jsx";
 import Register from "../features/auth/pages/Register.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
+import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
+import ResetPassword from "../features/auth/pages/ResetPassword.jsx";
+import PasswordResetSuccess from "../features/auth/pages/PasswordResetSuccess.jsx";
 import LandingPage from "../features/landing/pages/LandingPage.jsx";
 import UserProfile from "../features/users/pages/UserProfile.jsx";
 import Protected from "../components/Protected.jsx";
@@ -29,6 +32,30 @@ export const routes = createBrowserRouter([
     element: (
       <Guest>
         <Register />
+      </Guest>
+    ),
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <Guest>
+        <ForgotPassword />
+      </Guest>
+    ),
+  },
+  {
+    path: "/reset-password/:token",
+    element: (
+      <Guest>
+        <ResetPassword />
+      </Guest>
+    ),
+  },
+  {
+    path: "/password-reset-success",
+    element: (
+      <Guest>
+        <PasswordResetSuccess />
       </Guest>
     ),
   },

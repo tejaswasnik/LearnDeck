@@ -20,4 +20,5 @@ userRouter.patch(
 
 userRouter.delete("/me", authMiddleware, deleteUserController);
 userRouter.patch("/me/password", authMiddleware, updatePasswordController);
+userRouter.patch("/me/forgot-password", authMiddleware, updatePasswordController);
 export default userRouter;

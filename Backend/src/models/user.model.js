@@ -34,6 +34,8 @@ const userSchema = new mongoose.Schema({
     default: "student",
     enum: ["student", "instructor"],
   },
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 });
 
 userSchema.pre("save", async function () {

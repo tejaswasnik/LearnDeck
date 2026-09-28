@@ -228,3 +228,103 @@ export async function logoutController(req, res) {
     });
   }
 }
+
+export async function forgotPasswordController(req, res) {
+  const { email } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      // Do not reveal whether the email exists
+      return res.status(200).json({
+        success: true,
+        message: "If the email exists, a reset link has been sent.",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    const resetURL = `${config.frontendURL}/reset-password/${resetToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: "Password Reset Request",
+      text: `Hello ${user.name},\n\nYou requested a password reset. Please click the link below to reset your password:\n${resetURL}\n\nThis link expires in 15 minutes.\nIf you did not request this, please ignore this email.\n\nBest regards,\nThe LearnDeck Team`,
+      html: `<p>Hello ${user.name},</p>
+<p>You requested a password reset. Click the button below to reset your password:</p>
+<a href="${resetURL}" style="display:inline-block;padding:10px 20px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:5px;">Reset Password</a>
+<p>Or use this link: <a href="${resetURL}">${resetURL}</a></p>
+<p><strong>This link expires in 15 minutes.</strong></p>
+<p>If you did not request this, please ignore this email.</p>
+<p>Best regards,<br>The LearnDeck Team</p>`,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "If the email exists, a reset link has been sent.",
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
+
+export async function resetPasswordController(req, res) {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password || password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 8 characters long",
+      });
+    }
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+    const user = await userModel.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token",
+      });
+    }
+
+    // Assigning the plain password directly.
+    // The pre-save hook in user.model.js will automatically hash it using bcrypt before saving.
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset successful.",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
