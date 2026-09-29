@@ -36,8 +36,8 @@ passport.use(
 );
 app.use(cookieParser());
 
-app.get("/api/health", (req, res) => {
-  res.status(200).json({ status: "OK", timestamp: new Date() });
+app.get(["/health", "/api/health"], (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date() });
 });
 
 app.use("/api/auth", authRouter);
