@@ -6,5 +6,8 @@ export default defineConfig({
   server: {
     host: true, // Allows access from any device on the network
     port: 5173, // You can change this if needed
+    watch: {
+      usePolling: true, // Required for Docker/WSL environments
+    },
   },
 });

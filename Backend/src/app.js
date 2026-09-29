@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import authRouter from "../src/routes/auth.routes.js";
 import userRouter from "../src/routes/user.routes.js";
 import courseRouter from "../src/routes/course.routes.js";
@@ -47,11 +49,22 @@ app.use("/api/lectures", lectureRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/admin", adminRouter);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the public directory (Frontend build)
+app.use(express.static(path.join(__dirname, "../public")));
+
+// Catch-all handler for both API 404s and React routing
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-  });
+  if (req.originalUrl.startsWith("/api")) {
+    res.status(404).json({
+      success: false,
+      message: "Route not found",
+    });
+  } else {
+    res.sendFile(path.join(__dirname, "../public", "index.html"));
+  }
 });
 
 app.use((err, req, res, next) => {

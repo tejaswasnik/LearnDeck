@@ -49,7 +49,7 @@ export default function CourseDetails() {
             return;
         }
         if (isEnrolled) {
-            navigate(`/learning/${courseId}`);
+            navigate(`/learn/${courseId}`);
         } else {
             // Works for both free and paid courses
             await handleBuyCourse(courseId, user, () => {
@@ -81,7 +81,7 @@ export default function CourseDetails() {
 
     const handleLectureClick = (lecture) => {
         if (isEnrolled) {
-            navigate(`/learning/${courseId}`);
+            navigate(`/learn/${courseId}`);
             return;
         }
 

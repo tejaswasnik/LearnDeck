@@ -27,6 +27,12 @@ const useAuth = () => {
   };
   const handleGetMe = async () => {
     try {
+      const hasToken = document.cookie.includes("token=");
+      if (!hasToken) {
+        dispatch(setUser(null));
+        return;
+      }
+      
       dispatch(setLoading(true));
       const data = await getMe();
       dispatch(setUser(data.user)); // Extracted just the user object from the response

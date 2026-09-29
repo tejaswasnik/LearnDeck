@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  learndeck-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_RAZORPAY_KEY_ID: rzp_test_ThWDD2dfvHuGgX
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - FRONTEND_URL=http://localhost:3000
+      - PURE_FRONTEND_URL=http://localhost:3000
+    env_file:
+      - ./Backend/.env
+    depends_on:
+      - redis
+      - mongo
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

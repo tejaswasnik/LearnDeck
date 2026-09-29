@@ -9,9 +9,12 @@ RUN npm install
 
 COPY ./Frontend /app/
 
-# Optional: pass build-time variables if needed
-# ARG VITE_API_URL
-# ENV VITE_API_URL=$VITE_API_URL
+# Pass build-time variables for Vite (crucial for production)
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
+
+ARG VITE_RAZORPAY_KEY_ID
+ENV VITE_RAZORPAY_KEY_ID=$VITE_RAZORPAY_KEY_ID
 
 RUN npm run build
 

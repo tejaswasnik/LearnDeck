@@ -119,7 +119,7 @@ export const routes = createBrowserRouter([
     element: <CourseDetails />,
   },
   {
-    path: "/learning/:courseId",
+    path: "/learn/:courseId",
     element: (
       <Protected>
         <CoursePlayer />
