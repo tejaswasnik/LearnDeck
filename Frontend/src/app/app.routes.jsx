@@ -19,8 +19,13 @@ import Lectures from "../features/lectures/pages/Lectures.jsx";
 import CreateLecture from "../features/lectures/pages/CreateLecture.jsx";
 import EditLecture from "../features/lectures/pages/EditLecture.jsx";
 import CoursePlayer from "../features/courses/pages/CoursePlayer.jsx";
+import NotFound from "../components/NotFound.jsx";
 
 export const routes = createBrowserRouter([
+  {
+    path: "*",
+    element: <NotFound />,
+  },
   {
     path: "/",
     element: <LandingPage />,

@@ -40,7 +40,10 @@ export async function createCourseController(req, res) {
       course,
     });
   } catch (error) {
-    throw new Error(`Error creating course: ${error.message}`);
+    return res.status(500).json({
+      message: "Error creating course",
+      error: error.message,
+    });
   }
 }
 export async function updateCourseController(req, res) {
@@ -103,7 +106,7 @@ export async function updateCourseController(req, res) {
 export async function getCourseByIdController(req, res) {
   try {
     const { courseId } = req.params;
-    const course = await courseModel.findById(courseId);
+    const course = await courseModel.findById(courseId).populate("lectures");
     if (!course) {
       return res.status(404).json({
         message: "Course not found",

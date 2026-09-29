@@ -211,7 +211,7 @@ export async function logoutController(req, res) {
         message: "No token found.",
       });
     }
-    await redis.set(token, Date.now().toString(), "EX", 60 * 60);
+    await redis.set(token, Date.now().toString(), "EX", 7 * 24 * 60 * 60);
 
     res.clearCookie("token");
 

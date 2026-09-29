@@ -5,9 +5,16 @@ import useAuth from "../features/auth/hook/useAuth.js";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { handleLogout } = useAuth();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth?.user);
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      navigate(`/courses?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full bg-[#111111] border-b border-[#1a1a1a] shadow-sm z-50">
@@ -33,16 +40,10 @@ const Navbar = () => {
           {/* Navigation Links */}
           <nav className="hidden xl:flex items-center gap-6">
             <a
-              href="#courses"
+              href="/courses"
               className="text-[14px] font-medium text-[#c4c4c4] hover:text-white transition-colors"
             >
               Courses
-            </a>
-            <a
-              href="#categories"
-              className="text-[14px] font-medium text-[#c4c4c4] hover:text-white transition-colors"
-            >
-              Categories
             </a>
           </nav>
         </div>
@@ -56,6 +57,9 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search courses, tech skills, topics..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch}
               className="w-full h-[38px] pl-10 pr-4 bg-[#1d1d1d] border border-transparent rounded-[9px] text-white text-[13px] placeholder:text-[#6b6b6b] focus:outline-none focus:border-[#2a2a2a] focus:bg-[#222222] transition-colors"
             />
           </div>
@@ -91,7 +95,7 @@ const Navbar = () => {
                     Profile
                   </Link>
                   <Link
-                    to="/dashboard"
+                    to={user.role === 'instructor' ? '/instructor/dashboard' : '/dashboard'}
                     onClick={() => setIsDropdownOpen(false)}
                     className="block px-4 py-2 text-sm text-white hover:bg-[#2a2a2a] transition-colors"
                   >
@@ -138,6 +142,9 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search courses..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
             className="w-full h-[38px] pl-10 pr-4 bg-[#1d1d1d] border border-transparent rounded-[9px] text-white text-[13px] placeholder:text-[#6b6b6b] focus:outline-none focus:border-[#2a2a2a] focus:bg-[#222222] transition-colors"
           />
         </div>

@@ -50,12 +50,7 @@ export async function logoutUser() {
 }
 
 export async function googleAuth() {
-  try {
-    const response = await authApi.get("/auth/google");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
+  window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
 }
 
 export async function forgotPassword(email) {

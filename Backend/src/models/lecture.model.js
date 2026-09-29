@@ -12,6 +12,12 @@ const lectureSchema = new mongoose.Schema(
     publicId: {
       type: String,
     },
+    description: {
+      type: String,
+    },
+    duration: {
+      type: Number,
+    },
     isPreviewFree: {
       type: Boolean,
       default: false,

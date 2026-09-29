@@ -22,7 +22,7 @@ export default function CoursePlayer() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     const { handleGetCourseById } = useCourse();
-    const { user } = useSelector((state) => state.auth);
+    const { user, loading: authLoading } = useSelector((state) => state.auth);
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -57,10 +57,10 @@ export default function CoursePlayer() {
 
     // If not enrolled, redirect back to course details
     useEffect(() => {
-        if (!isLoading && course && !isEnrolled) {
+        if (!isLoading && !authLoading && course && !isEnrolled) {
             navigate(`/courses/${courseId}`);
         }
-    }, [isLoading, course, isEnrolled, navigate, courseId]);
+    }, [isLoading, authLoading, course, isEnrolled, navigate, courseId]);
 
 
     // If loading, show skeleton

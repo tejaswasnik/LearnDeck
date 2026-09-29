@@ -4,6 +4,7 @@ import userRouter from "../src/routes/user.routes.js";
 import courseRouter from "../src/routes/course.routes.js";
 import lectureRouter from "../src/routes/lecture.routes.js";
 import paymentRouter from "../src/routes/order.routes.js";
+import adminRouter from "../src/routes/admin.routes.js";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import passport from "passport";
@@ -34,9 +35,33 @@ passport.use(
   ),
 );
 app.use(cookieParser());
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "OK", timestamp: new Date() });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/courses", courseRouter);
 app.use("/api/lectures", lectureRouter);
 app.use("/api/payments", paymentRouter);
+app.use("/api/admin", adminRouter);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    success: false,
+    message: process.env.NODE_ENV === "production"
+      ? "Internal server error"
+      : err.message,
+  });
+});
+
 export default app;
